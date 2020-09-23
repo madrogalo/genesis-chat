@@ -12,17 +12,17 @@ import HeadwayIcon from './HeadwayIcon';
 function App() {
     return (
         <div className="container">
-        <div className="row">
-            <div className="col-9" style={{ display: 'flex', backgroundColor: 'white' }}>
-                <ChatWrap />
-                <ChatBlock />
+            <div className="row">
+                <div className="col-9" style={{ display: 'flex', backgroundColor: 'white' }}>
+                    <ChatWrap />
+                    <ChatBlock />
+                </div>
+                <div className="col-3" style={{color: 'white'}}>
+                    <HeadwayIcon />
+                    Тестовое задание на позицию: <br/>
+                    <b style={{float:'right'}}>Frontend Developer</b>
+                </div>
             </div>
-            <div className="col-3" style={{color: 'white'}}>
-                <HeadwayIcon />
-                Тестовое задание на позицию: <br/>
-                <b style={{float:'right'}}>Frontend Developer</b>
-            </div>
-        </div>
         </div>
     );
 }
