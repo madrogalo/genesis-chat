@@ -31,14 +31,12 @@ function ChatWrap() {
         },
     ]
 
-    console.log(window.location.pathname)
-
     return (
         <div className="contacts-wrap">
             <div className="contact">
                 {
                     contact_user.map((item, idx) => (
-                        <div className={`contact-user ${item.path === window.location.path ? "active" : ''}`} key={idx}>
+                        <div className={"contact-user"} key={idx}>
                             <div className="contact-user-foto">
                                 <Link to={item.path}>
                                     <img src={item.img} alt={item.name} />
@@ -46,7 +44,7 @@ function ChatWrap() {
                             </div>
                             <div className="contact-user-info">
                                 <div className="contact-user-top">
-                                    <NavLink to={item.path} className="contact-user-name active">{item.name}</NavLink>
+                                    <NavLink to={item.path} className="contact-user-name " activeStyle={{ color: 'red' }}>{item.name}</NavLink>
                                 </div>
                             </div>
                         </div>
