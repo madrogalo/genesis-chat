@@ -1,5 +1,6 @@
 import React from 'react';
-import RoutesItem from "../routes"
+import RoutesItem from "../routes";
+
 
 function ChatBlock() {
     return (

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 const images = {
     john_show: 'https://ktovkurse.com/wp-content/uploads/2015/06/jon-Snow-e1435181608374.jpg',
@@ -66,11 +66,6 @@ function ChatItem(props) {
                 setMessages(data === null ? {} : data)
             });
     }
-
-    useEffect(() => {
-        getMessage()
-    }, [])
-
 
 
     return (
