@@ -1,5 +1,5 @@
-import React from 'react';
-import { useFirestore, useFirestoreDocData } from "reactfire";
+import React, { useState } from 'react';
+import { useFirestore, useFirestoreCollectionData } from "reactfire";
 
 import { convertUnixTimestamp } from './../utils';
 
@@ -15,69 +15,126 @@ const images = {
 
 function ChatItemNew(props) {
 
-    const chat = useFirestore().collection('chat').doc('pedro');
-    const messages = useFirestoreDocData(chat)
+    const time = Math.floor(Date.now() / 1000)
+    const [ messageState, setFormState ] = useState( {
+            text: '',
+            time: time,
+            userMessage: true
+        }
+    )
 
-    const messcoll = useFirestore().collection('chat').doc('pedro')
 
-    const addMessages = (data) => {
-        // chatMessage.add(data)
-    }
-
-    const dataMess = {
-        time: 12323435,
-        text: 'Hello Cwwhat888',
-        userMessage: true
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormState((prevNote) => {
+            return {
+                ...prevNote,
+                [name]: value,
+            };
+        });
     };
 
+    const handleUserKeyPress = e => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            console.log('handleUserKeyPress')
+            sendMessageToFirestore(messageState)
+            setFormState({
+                text: '',
+                time: Math.floor(Date.now() / 1000),
+                userMessage: true
+            })
+        }
+    };
 
-    function pushData() {
-        console.log('push');
-        // addMessages(dataMess)
-        messcoll.set({dataMess},  { merge: true })
+    const getMessageToFirestore = useFirestore()
+        .collection('chat')
+        .doc(`${props.name}`)
+        .collection('messages')
+
+    const messages = useFirestoreCollectionData(getMessageToFirestore)
+
+
+    const addMessageToFirestore = useFirestore()
+        .collection('chat')
+        .doc(`${props.name}`)
+        .collection('messages')
+
+
+    // Bot
+
+
+    const randomBotMessage = [
+        {
+            text: 'Hi I`m bot',
+            time: Math.floor(Date.now() / 1000),
+        },
+        {
+            text: `Time is ${convertUnixTimestamp(Math.floor(Date.now() / 1000))}`,
+            time: Math.floor(Date.now() / 1000),
+        },
+        {
+            text: `Time is ${Math.floor(Date.now() / 1000)}`,
+            time: Math.floor(Date.now() / 1000),
+        },
+        {
+            text: 'I am a doctor',
+            time: Math.floor(Date.now() / 1000),
+        },
+        {
+            text: 'I like Help',
+            time: Math.floor(Date.now() / 1000),
+        },
+        {
+            text: 'JS Rules',
+            time: Math.floor(Date.now() / 1000),
+        },
+    ]
+
+
+    const botMessage = {
+        text: 'Hi I`m bot',
+        time: time,
+        userMessage: false
+    }
+
+    function sendMessageToFirestore(message) {
+        console.log('sendMessageToFirestore');
+        addMessageToFirestore.add({message})
     }
 
 
-    // addUser = e => {
-    //     e.preventDefault();
-    //     const db = firebase.firestore();
-    //     db.settings({
-    //         timestampsInSnapshots: true
-    //     });
-    //     const userRef = db.collection(“users”).add({
-    //         fullname: this.state.fullname,
-    //         email: this.state.email
-    //     });
-    //     this.setState({
-    //         fullname: “”,
-    //     email: “”
-    // });
-    // };
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
 
-
-    console.log('messages', messages);
+    function sortByAge(arr) {
+        arr.sort((a, b) => a.age > b.age ? 1 : -1);
+    }
 
 
     return (
         <div className="blocked-wrap">
             <div style={{position: 'relative'}}>
-                <button onClick={() => pushData()}>push data</button>
                 <div className="chat">
                     {
-                        // messages.reverse().map((item, idx) => (
-                        //     <div className={`chat-message ${item.userMessage ? 'user-message' : ''}`} key={idx}>
-                        //         <div className="chat-message-foto">
-                        //             <img src={`${item.userMessage ? images[props.name] : images.bot}`} alt={idx} />
-                        //         </div>
-                        //         <div className="chat-message-text">
-                        //             {item.text}
-                        //         </div>
-                        //         <div className="chat-message-time">
-                        //             {convertUnixTimestamp(item.time.seconds)}
-                        //         </div>
-                        //     </div>
-                        //     )
-                        // )
+                        messages
+                            .sort((prev, next) => prev.message.time - next.message.time)
+                            .reverse()
+                            .map((item, idx) => (
+                            <div className={`chat-message ${item.message.userMessage ? 'user-message' : ''}`} key={idx}>
+                                <div className="chat-message-foto">
+                                    <img src={`${item.message.userMessage ? images[props.name] : images.bot}`} alt={idx} />
+                                </div>
+                                <div className="chat-message-text">
+                                    {item.message && item.message.text}
+                                </div>
+                                <div className="chat-message-time">
+                                    {convertUnixTimestamp(item.message.time)}
+                                </div>
+                            </div>
+                            )
+                        )
                     }
                 </div>
             </div>
@@ -86,10 +143,10 @@ function ChatItemNew(props) {
                     <div className="textarea-wrap" >
                         <textarea
                             placeholder="Text"
-                            // onChange={event => handleChange(event)}
-                            // value={formState.text}
-                            // name="text"
-                            // onKeyPress={handleUserKeyPress}
+                            onChange={event => handleChange(event)}
+                            value={messageState.text}
+                            name="text"
+                            onKeyPress={handleUserKeyPress}
                         >
                         </textarea>
                     </div>
@@ -99,6 +156,7 @@ function ChatItemNew(props) {
                         </div>
                     </div>
                 </form>
+                <button onClick={() => sendMessageToFirestore(randomBotMessage[getRandomInt(randomBotMessage.length)])}>add bot message</button>
             </div>
         </div>
     );

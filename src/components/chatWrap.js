@@ -5,11 +5,6 @@ function ChatWrap() {
 
     const contact_user = [
         {
-            path: '/pedro',
-            name: 'Pedro',
-            img: 'https://ktovkurse.com/wp-content/uploads/2015/06/jon-Snow-e1435181608374.jpg'
-        },
-        {
             path: '/john_show',
             name: 'John Show',
             img: 'https://ktovkurse.com/wp-content/uploads/2015/06/jon-Snow-e1435181608374.jpg'

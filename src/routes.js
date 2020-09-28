@@ -7,14 +7,14 @@ function RoutesItem() {
     return (
         <Switch>
             <Route exact path="/">
-                <Redirect to="/pedro" />
+                <Redirect to="/john_show" />
             </Route>
-            <Route path='/pedro'  component={() => ChatItemNew({name: 'pedro'})} />
-            <Route path='/john_show'  component={() => ChatItem({name: 'john_show'})} />
-            <Route path='/martin' component={() => ChatItem({name: 'martin'})} />
-            <Route path='/sherlock' component={() => ChatItem({name: 'sherlock'})} />
-            <Route path='/monica' component={() => ChatItem({name: 'monica'})} />
-            <Route path='/dallas' component={() => ChatItem({name: 'dallas'})} />
+            {/*<Route path='/pedro'  component={() => ChatItemNew({name: 'pedro'})} />*/}
+            <Route path='/john_show'  component={() => ChatItemNew({name: 'john_show'})} />
+            <Route path='/martin' component={() => ChatItemNew({name: 'martin'})} />
+            <Route path='/sherlock' component={() => ChatItemNew({name: 'sherlock'})} />
+            <Route path='/monica' component={() => ChatItemNew({name: 'monica'})} />
+            <Route path='/dallas' component={() => ChatItemNew({name: 'dallas'})} />
         </Switch>
     )
 }
